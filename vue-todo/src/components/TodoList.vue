@@ -14,7 +14,7 @@
                 </span>
 
             </li>
-        </ul>`~`
+        </ul>
     </div>
 </template>
 

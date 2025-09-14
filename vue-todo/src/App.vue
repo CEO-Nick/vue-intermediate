@@ -6,7 +6,7 @@
 
     <!-- v-bind:todo-list="todoItems" 와 동일 -->
     <TodoList :todo-list="todoItems" @remove-todo="removeTodo" @toggle-complete="toggleComplete"/>
-    <TodoFooter />
+    <TodoFooter @clear-all="clearAll"/>
   </div>
 </template>
 
@@ -52,6 +52,11 @@ import TodoFooter from './components/TodoFooter.vue';
         localStorage.setItem(todo, JSON.stringify(todoObj));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
         // this.todoItems[index] = todoObj; // 이렇게 하면 자동 반응이 안된다 (refresh 직접 해야 반영됨)
         this.$set(this.todoItems, index, todoObj);  // 이렇게 해야 Vue가 감지해서 자동 반응한다 (reactive)
+      },
+
+      clearAll: function() {
+        localStorage.clear();
+        this.todoItems = [];
       }
     },
     

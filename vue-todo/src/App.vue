@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <TodoHeader />
-    <TodoInput />
-    <TodoList />
+    <TodoInput @add-todo="addTodo"/>
+    <TodoList :todo-list="todoItems" @remove-todo="removeTodo"/>
     <TodoFooter />
   </div>
 </template>
@@ -15,12 +15,41 @@ import TodoFooter from './components/TodoFooter.vue';
 
   export default {
     name: 'App',
+
     components: {
       TodoHeader,
       TodoInput,
       TodoList,
       TodoFooter,
-    }
+    },
+
+    data: function() {
+      return {
+        todoItems: []
+      }
+    },
+
+    methods: {
+      addTodo: function(todo) {
+        localStorage.setItem(todo, todo);
+        this.todoItems.push(todo);
+      },
+
+      removeTodo: function(todoItem, index) {
+        localStorage.removeItem(todoItem);
+        this.todoItems.splice(index, 1); 
+      }
+    },
+    
+    created: function() {
+      console.log('created');
+      if (localStorage.length <= 0) return;
+      for (var i = 0; i < localStorage.length; i++) {
+          if (localStorage.key(i) === 'naveruserlocale') continue;
+          this.todoItems.push(localStorage.key(i))
+      }
+    },
+
   }
 </script>
 

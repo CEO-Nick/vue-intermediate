@@ -3,8 +3,8 @@
         <!-- v-model: input에 입력된 값을 동적으로 vue 인스턴스 안에 매핑하는 역할 -->
          <!-- 화면에서의 데이터 변경과 Vue 인스턴스의 데이터 변경이 서로 동기화되어 있다 -->
           <!-- keyup.enter : input 박스에서 입력 후 엔터 눌렀을 때 동작할 메서드 -->
-        <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo">
-        <span class="addContainer" v-on:click="addTodo">
+        <input type="text" v-model="newTodoItem" @keyup.enter="addTodo">
+        <span class="addContainer" @click="addTodo">
             <i class="fas fa-plus addBtn"></i>
         </span>
     </div>
@@ -20,7 +20,9 @@
         methods: {
             addTodo: function() {
                 // 여기서 this는 TodoInput component를 가리킴
-                localStorage.setItem(this.newTodoItem, this.newTodoItem);
+                // localStorage.setItem(this.newTodoItem, this.newTodoItem);
+                if (this.newTodoItem === '') return;
+                this.$emit('add-todo', this.newTodoItem);
                 this.clearInput();
             },
             clearInput: function() {

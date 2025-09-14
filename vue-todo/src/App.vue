@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <TodoHeader />
+    <!-- v-on:add-todo="addTodo"와 동일 -->
     <TodoInput @add-todo="addTodo"/>
+
+    <!-- v-bind:todo-list="todoItems" 와 동일 -->
     <TodoList :todo-list="todoItems" @remove-todo="removeTodo"/>
     <TodoFooter />
   </div>

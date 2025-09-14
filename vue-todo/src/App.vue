@@ -5,7 +5,7 @@
     <TodoInput @add-todo="addTodo"/>
 
     <!-- v-bind:todo-list="todoItems" 와 동일 -->
-    <TodoList :todo-list="todoItems" @remove-todo="removeTodo"/>
+    <TodoList :todo-list="todoItems" @remove-todo="removeTodo" @toggle-complete="toggleComplete"/>
     <TodoFooter />
   </div>
 </template>
@@ -34,13 +34,24 @@ import TodoFooter from './components/TodoFooter.vue';
 
     methods: {
       addTodo: function(todo) {
-        localStorage.setItem(todo, todo);
-        this.todoItems.push(todo);
+        var obj = {completed: false, item: todo};
+        localStorage.setItem(todo, JSON.stringify(obj));
+        this.todoItems.push(obj);
       },
 
       removeTodo: function(todoItem, index) {
         localStorage.removeItem(todoItem);
         this.todoItems.splice(index, 1); 
+      },
+
+      toggleComplete: function(todo, index) {
+        var todoObj = JSON.parse(localStorage.getItem(todo));
+        todoObj.completed = !todoObj.completed;
+
+        // localStorage와 Array에 모두 반영하기
+        localStorage.setItem(todo, JSON.stringify(todoObj));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
+        // this.todoItems[index] = todoObj; // 이렇게 하면 자동 반응이 안된다 (refresh 직접 해야 반영됨)
+        this.$set(this.todoItems, index, todoObj);  // 이렇게 해야 Vue가 감지해서 자동 반응한다 (reactive)
       }
     },
     
@@ -49,7 +60,11 @@ import TodoFooter from './components/TodoFooter.vue';
       if (localStorage.length <= 0) return;
       for (var i = 0; i < localStorage.length; i++) {
           if (localStorage.key(i) === 'naveruserlocale') continue;
-          this.todoItems.push(localStorage.key(i))
+          // localStorage에서 key에 대한 value를 가져온다 -> 근데 JSON.stringify()로 Obj를 string으로 만들어서 넣는다.
+          var str = localStorage.getItem(localStorage.key(i));
+          // string을 다시 Object로 변환
+          var obj = JSON.parse(str);
+          this.todoItems.push(obj);
       }
     },
 

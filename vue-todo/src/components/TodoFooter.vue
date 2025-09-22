@@ -8,7 +8,7 @@
     export default {
         methods: {
             clearTodo: function() {
-                this.$emit('clear-all');
+                this.$emit('clearAll');
             }
         }
         

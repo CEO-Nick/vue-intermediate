@@ -3,7 +3,7 @@
         <ul>
             <!-- todoItems에 있는 만큼 뿌려줌 -->
             <li v-for="(todoItem, index) in todoList" :key="todoItem.item" class="shadow">
-                <i class="checkBtn fas fa-check" :class="{checkBtnCompleted: todoItem.completed}" @click="toggleComplete(todoItem.item, index)"></i>
+                <i class="checkBtn fas fa-check" :class="{checkBtnCompleted: todoItem.completed}" @click="toggleComplete(todoItem, index)"></i>
                 <!-- todoItem.completed 가 true면 textCompleted 라는 속성이 살아 있고, false면 해당 속성 없어진다. -->
                 <span :class="{textCompleted: todoItem.completed}">
                     {{ todoItem.item }}
@@ -20,13 +20,9 @@
 
 <script>
     export default {
-        props: {
-            todoList: {
-                type: Array,
-                required: true,
-            }
-        },
+        props: ['todoList'],
 
+        // TodList에서만 관리하던 todoItems를 App.vue에서 관리하도록 변경 -> 중앙집중식
         // data: function() {
         //     return {
         //         todoItems: []
@@ -46,7 +42,7 @@
 
         methods: {
             removeTodo: function(todoItem, index) {
-                this.$emit('remove-todo', todoItem, index);
+                this.$emit('removeItem', todoItem, index);
                 // console.log('remove items', todoItem, index);
                 // localStorage.removeItem(todoItem);
                 // // this.todoItems.splice(index, 1);    // splice(index, 개수) : js array api로 특정 인덱스에서부터 삭제할 개수 입력받아서 삭제
@@ -54,7 +50,7 @@
                 // // slice(index, cnt) -> 기존 배열을 변환하지 않고 새 배열 반환
             },
             toggleComplete: function(todoItem, index) {
-                this.$emit('toggle-complete', todoItem, index);
+                this.$emit('toggleItem', todoItem, index);
             }
         }
     }

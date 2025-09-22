@@ -1,12 +1,9 @@
 <template>
   <div id="app">
     <TodoHeader />
-    <!-- v-on:add-todo="addTodo"와 동일 -->
-    <TodoInput @add-todo="addTodo"/>
-
-    <!-- v-bind:todo-list="todoItems" 와 동일 -->
-    <TodoList :todo-list="todoItems" @remove-todo="removeTodo" @toggle-complete="toggleComplete"/>
-    <TodoFooter @clear-all="clearAll"/>
+    <TodoInput @addTodoItem="addOneItem"/>  <!-- @하위 컴포넌트에서 발생시킨 이벤트 이름="현재 컴포넌트 메서드명"-->
+    <TodoList :todo-list="todoItems" @removeItem="removeOneItem" @toggleItem="toggleOneItem"/>
+    <TodoFooter @clearAll="clearAllItems"/>
   </div>
 </template>
 
@@ -33,28 +30,26 @@ import TodoFooter from './components/TodoFooter.vue';
     },
 
     methods: {
-      addTodo: function(todo) {
+      addOneItem: function(todo) {
         var obj = {completed: false, item: todo};
         localStorage.setItem(todo, JSON.stringify(obj));
         this.todoItems.push(obj);
       },
 
-      removeTodo: function(todoItem, index) {
+      removeOneItem: function(todoItem, index) {
         localStorage.removeItem(todoItem);
         this.todoItems.splice(index, 1); 
       },
 
-      toggleComplete: function(todo, index) {
-        var todoObj = JSON.parse(localStorage.getItem(todo));
-        todoObj.completed = !todoObj.completed;
-
-        // localStorage와 Array에 모두 반영하기
-        localStorage.setItem(todo, JSON.stringify(todoObj));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
-        // this.todoItems[index] = todoObj; // 이렇게 하면 자동 반응이 안된다 (refresh 직접 해야 반영됨)
-        this.$set(this.todoItems, index, todoObj);  // 이렇게 해야 Vue가 감지해서 자동 반응한다 (reactive)
+      toggleOneItem: function(todo, index) {
+        // todo를 수정해서 todoItems에 반영하는건 좋지 못한 패턴 -> Vue가 감지하지 못함
+        // 그래서 이 컨테이너 안에 있는 todoItems를 수정
+        var current = this.todoItems[index];  
+        current.completed = !current.completed;
+        localStorage.setItem(current.item, JSON.stringify(current));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
       },
 
-      clearAll: function() {
+      clearAllItems: function() {
         localStorage.clear();
         this.todoItems = [];
       }

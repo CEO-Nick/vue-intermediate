@@ -19,10 +19,8 @@
         },
         methods: {
             addTodo: function() {
-                // 여기서 this는 TodoInput component를 가리킴
-                // localStorage.setItem(this.newTodoItem, this.newTodoItem);
                 if (this.newTodoItem === '') return;
-                this.$emit('add-todo', this.newTodoItem);
+                this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
             },
             clearInput: function() {

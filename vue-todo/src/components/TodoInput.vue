@@ -27,14 +27,14 @@
 import Modal from './common/Modal.vue'
 
     export default {
-        data: function() {
+        data() {
             return {
                 newTodoItem: "",     // input에 입력되는 텍스트 값을 저장할 변수
                 showModal: false,
             }
         },
         methods: {
-            addTodo: function() {
+            addTodo() {
                 if (this.newTodoItem === '') {
                   this.showModal = !this.showModal;
                   return;
@@ -42,7 +42,7 @@ import Modal from './common/Modal.vue'
                 this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
             },
-            clearInput: function() {
+            clearInput() {
                 this.newTodoItem = '';
             }
         },

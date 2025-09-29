@@ -23,14 +23,14 @@
         props: ['todoList'],
 
         // TodList에서만 관리하던 todoItems를 App.vue에서 관리하도록 변경 -> 중앙집중식
-        // data: function() {
+        // data() {
         //     return {
         //         todoItems: []
         //     }
         // },
 
         // // 인스턴스가 생성되지마자 호출되는 라이프 사이클 훅
-        // created: function() {
+        // created() {
         //     console.log('created');
         //     if (localStorage.length <= 0) return;
         //     for (var i = 0; i < localStorage.length; i++) {
@@ -41,7 +41,7 @@
         // },
 
         methods: {
-            removeTodo: function(todoItem, index) {
+            removeTodo(todoItem, index) {
                 this.$emit('removeItem', todoItem, index);
                 // console.log('remove items', todoItem, index);
                 // localStorage.removeItem(todoItem);
@@ -49,7 +49,7 @@
                 // this.todoItems = this.todoItems.slice(index, 1);
                 // // slice(index, cnt) -> 기존 배열을 변환하지 않고 새 배열 반환
             },
-            toggleComplete: function(todoItem, index) {
+            toggleComplete(todoItem, index) {
                 this.$emit('toggleItem', todoItem, index);
             }
         }

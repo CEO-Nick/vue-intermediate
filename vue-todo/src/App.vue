@@ -23,25 +23,25 @@ import TodoFooter from './components/TodoFooter.vue';
       TodoFooter,
     },
 
-    data: function() {
+    data() {
       return {
         todoItems: []
       }
     },
 
     methods: {
-      addOneItem: function(todo) {
+      addOneItem(todo) {
         const obj = {completed: false, item: todo};
         localStorage.setItem(todo, JSON.stringify(obj));
         this.todoItems.push(obj);
       },
 
-      removeOneItem: function(todoItem, index) {
+      removeOneItem(todoItem, index) {
         localStorage.removeItem(todoItem);
         this.todoItems.splice(index, 1); 
       },
 
-      toggleOneItem: function(todo, index) {
+      toggleOneItem(todo, index) {
         // todo를 수정해서 todoItems에 반영하는건 좋지 못한 패턴 -> Vue가 감지하지 못함
         // 그래서 이 컨테이너 안에 있는 todoItems를 수정
         const current = this.todoItems[index];  
@@ -49,13 +49,13 @@ import TodoFooter from './components/TodoFooter.vue';
         localStorage.setItem(current.item, JSON.stringify(current));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
       },
 
-      clearAllItems: function() {
+      clearAllItems() {
         localStorage.clear();
         this.todoItems = [];
       }
     },
     
-    created: function() {
+    created() {
       console.log('created');
       if (localStorage.length <= 0) return;
       for (let i = 0; i < localStorage.length; i++) {

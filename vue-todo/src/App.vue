@@ -31,7 +31,7 @@ import TodoFooter from './components/TodoFooter.vue';
 
     methods: {
       addOneItem: function(todo) {
-        var obj = {completed: false, item: todo};
+        const obj = {completed: false, item: todo};
         localStorage.setItem(todo, JSON.stringify(obj));
         this.todoItems.push(obj);
       },
@@ -44,7 +44,7 @@ import TodoFooter from './components/TodoFooter.vue';
       toggleOneItem: function(todo, index) {
         // todo를 수정해서 todoItems에 반영하는건 좋지 못한 패턴 -> Vue가 감지하지 못함
         // 그래서 이 컨테이너 안에 있는 todoItems를 수정
-        var current = this.todoItems[index];  
+        const current = this.todoItems[index];  
         current.completed = !current.completed;
         localStorage.setItem(current.item, JSON.stringify(current));  // 로컬 스토리지 update api 없음 -> 덮어쓰기
       },
@@ -58,12 +58,12 @@ import TodoFooter from './components/TodoFooter.vue';
     created: function() {
       console.log('created');
       if (localStorage.length <= 0) return;
-      for (var i = 0; i < localStorage.length; i++) {
+      for (let i = 0; i < localStorage.length; i++) {
           if (localStorage.key(i) === 'naveruserlocale') continue;
           // localStorage에서 key에 대한 value를 가져온다 -> 근데 JSON.stringify()로 Obj를 string으로 만들어서 넣는다.
-          var str = localStorage.getItem(localStorage.key(i));
+          const str = localStorage.getItem(localStorage.key(i));
           // string을 다시 Object로 변환
-          var obj = JSON.parse(str);
+          const obj = JSON.parse(str);
           this.todoItems.push(obj);
       }
     },

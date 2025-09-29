@@ -26,31 +26,31 @@
 <script>
 import Modal from './common/Modal.vue'
 
-    export default {
-        data() {
-            return {
-                newTodoItem: "",     // input에 입력되는 텍스트 값을 저장할 변수
-                showModal: false,
-            }
-        },
-        methods: {
-            addTodo() {
-                if (this.newTodoItem === '') {
-                  this.showModal = !this.showModal;
-                  return;
-                }
-                this.$emit('addTodoItem', this.newTodoItem);
-                this.clearInput();
-            },
-            clearInput() {
-                this.newTodoItem = '';
-            }
-        },
-        components: {
-          Modal: Modal
+export default {
+    data() {
+        return {
+            newTodoItem: "",     // input에 입력되는 텍스트 값을 저장할 변수
+            showModal: false,
         }
-        
+    },
+    methods: {
+        addTodo() {
+            if (this.newTodoItem === '') {
+              this.showModal = !this.showModal;
+              return;
+            }
+            this.$emit('addTodoItem', this.newTodoItem);
+            this.clearInput();
+        },
+        clearInput() {
+            this.newTodoItem = '';
+        }
+    },
+    components: {
+      Modal
     }
+
+}
 </script>
 
 

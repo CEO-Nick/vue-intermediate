@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <ul>
+    <section>
+        <transition-group name="list" tag="ul">
             <!-- todoItems에 있는 만큼 뿌려줌 -->
             <li v-for="(todoItem, index) in todoList" :key="todoItem.item" class="shadow">
                 <i class="checkBtn fas fa-check" :class="{checkBtnCompleted: todoItem.completed}" @click="toggleComplete(todoItem, index)"></i>
@@ -8,14 +8,14 @@
                 <span :class="{textCompleted: todoItem.completed}">
                     {{ todoItem.item }}
                 </span>
-                
+
                 <span class="removeBtn" @click="removeTodo(todoItem.item, index)">
                     <i class="removeBtn fas fa-trash-alt"></i>
                 </span>
 
             </li>
-        </ul>
-    </div>
+        </transition-group>
+    </section>
 </template>
 
 <script>
@@ -89,5 +89,14 @@ li {
 .removeBtn {
   margin-left: auto;
   color: #de4343;
+}
+
+/* transition css */
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>

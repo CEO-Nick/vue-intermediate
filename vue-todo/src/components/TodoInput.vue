@@ -7,25 +7,47 @@
         <span class="addContainer" @click="addTodo">
             <i class="fas fa-plus addBtn"></i>
         </span>
+        <Modal v-if="showModal" @close="showModal = false">
+
+          <!-- slot: 특정 컴포넌트의 일부 UI를 재사용(재정의)할 수 있는 vue의 기능 -->
+          <h3 slot="header">
+            경고
+            <i class="closeModalBtn fa fa-times" 
+              aria-hidden="true" 
+              @click="showModal = false">
+            </i>
+          </h3>
+
+          <div slot="body">무언가를 입력하세요.</div>
+        </Modal>
     </div>
 </template>
 
 <script>
+import Modal from './common/Modal.vue'
+
     export default {
         data: function() {
             return {
-                newTodoItem: ""     // input에 입력되는 텍스트 값을 저장할 변수
+                newTodoItem: "",     // input에 입력되는 텍스트 값을 저장할 변수
+                showModal: false,
             }
         },
         methods: {
             addTodo: function() {
-                if (this.newTodoItem === '') return;
+                if (this.newTodoItem === '') {
+                  this.showModal = !this.showModal;
+                  return;
+                }
                 this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
             },
             clearInput: function() {
                 this.newTodoItem = '';
             }
+        },
+        components: {
+          Modal: Modal
         }
         
     }

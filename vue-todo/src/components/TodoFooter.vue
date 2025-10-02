@@ -1,18 +1,19 @@
 <template>
-    <div class="clearAllContainer">
-        <span class="clearAllBtn" @click="clearTodo">Clear All</span>
-    </div>
+  <div class="clearAllContainer">
+    <span class="clearAllBtn" @click="clearTodo">Clear All</span>
+  </div>
 </template>
 
 <script>
-    export default {
-        methods: {
-            clearTodo() {
-                this.$emit('clearAll');
-            }
-        }
-        
+export default {
+  methods: {
+    clearTodo() {
+      // this.$emit('clearAll');
+      this.$store.commit('clearAllItems');
     }
+  }
+
+}
 </script>
 
 <style scoped>
@@ -24,6 +25,7 @@
   border-radius: 5px;
   margin: 0 auto;
 }
+
 .clearAllBtn {
   color: #e20303;
   /* 추가 */

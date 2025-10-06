@@ -24,12 +24,13 @@ export default {
     TodoFooter,
   },
 
-  data() {
-    return {
-      todoItems: []
-    }
-  },
+  // data() {
+  //   return {
+  //     todoItems: []
+  //   }
+  // },
 
+  // 전부 store로 넘어감!
   // methods: {
   //   addOneItem(todo) {
   //     const obj = {completed: false, item: todo};

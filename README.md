@@ -48,3 +48,71 @@ Attribution-NonCommercial-NoDerivs 4.0 Unported License</a>.
 - mutations은 `commit()`으로 동작시킨다.
     - mutation을 동작시키는 명령어
     - state를 변경하기 위해 인자(payload)를 전달할 수 있음
+
+### state를 직접 변강하지 않고 `mutations`로 변경하는지?
+- state의 값을 직접 여러 컴포넌트에서 변경하면 추적하기 어렵다
+- mutation을 거치지 않으면 vue의 반응성을 얻기 어렵다. -> ??? 이 과정을 이해하고 싶다.
+- mutation에 의해 state가 변경되면 자연스럽게 Vue 리액티비티에 의해서 화면이 다시 갱신된다.
+
+### `actions`
+> 비동기 처리 로직을 선언하는 메서드 
+> ex) 서버에 데이터 요청, Promise, async 등 비동기 처리는 모두 actions에 선언
+
+https://joshua1988.github.io/web-development/javascript/promise-for-beginners/
+https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/
+
+- context란?
+  - actions에서 mutations로 접근하는 방법
+```javascript
+mutations: {
+    addCounter (state)
+    {
+        state.counter * 2;
+    }
+}
+
+actions: {
+    delayedAddCounter(context)
+    {
+        setTimeout(() => context.commit('addCounter'), 2000);
+    }
+}
+
+// App.vue
+methods: {
+    incrementCounter()
+    {
+        this.$store.dispatch('delayedAddCounter');
+    }
+}
+```
+이 코드는 2초 기다렸다가 카운터를 1 증가 시키는 로직
+
+```javascript
+// store.js
+mutations: {
+    // state에 서버에서 받아온 값을 밀어넣어준다.
+    setData(state, fetchedData)
+    {
+        state.product = fetchedData;
+    }
+}
+
+actions: {
+    // 서버 요청 후에 응답값을 mutations로 넘겨준다
+    fetchProductData(context)
+    {
+        return axios.get('https://domain.com/products/1')
+            .then(response => context.commit('setData', response));
+    }
+}
+
+// App.vue
+methods: {
+    getProduct()
+    {
+        this.$store.dispatch('fetchProductData');
+    }
+}
+```
+

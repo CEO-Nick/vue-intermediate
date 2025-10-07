@@ -25,6 +25,7 @@
 
 <script>
 import Modal from './common/Modal.vue'
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -34,15 +35,19 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      commitAddTodo: 'addOneItem'
+    }),
     addTodo() {
       if (this.newTodoItem === '') {
-        this.showModal = !this.showModal;
+        this.showModal = true;
         return;
       }
       // this.$emit('addTodoItem', this.newTodoItem);
       const text = this.newTodoItem.trim();
-      this.$store.commit('addOneItem', text);
+      this.commitAddTodo(text);
       this.clearInput();
+      this.showModal = false;
     },
     clearInput() {
       this.newTodoItem = '';

@@ -2,17 +2,16 @@
   <section>
     <transition-group name="list" tag="ul">
       <!-- todoItems에 있는 만큼 뿌려줌 -->
-      <li v-for="(todoItem, index) in this.$store.state.todoItems" :key="todoItem.item" class="shadow">
+      <li v-for="(todoItem, index) in this.storedTodoItems" :key="todoItem.item"
+          class="shadow">
         <i class="checkBtn fas fa-check" :class="{checkBtnCompleted: todoItem.completed}"
            @click="toggleComplete(index)"></i>
         <!-- todoItem.completed 가 true면 textCompleted 라는 속성이 살아 있고, false면 해당 속성 없어진다. -->
-        <span :class="{textCompleted: todoItem.completed}">
-                    {{ todoItem.item }}
-                </span>
+        <span :class="{textCompleted: todoItem.completed}"> {{ todoItem.item }} </span>
 
-        <span class="removeBtn" @click="removeTodo(todoItem.item, index)">
-                    <i class="removeBtn fas fa-trash-alt"></i>
-                </span>
+        <span class="removeBtn" @click="removeTodo(index)">
+          <i class="removeBtn fas fa-trash-alt"></i>
+        </span>
 
       </li>
     </transition-group>
@@ -20,34 +19,32 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
-  // TodList에서만 관리하던 todoItems를 App.vue에서 관리하도록 변경 -> 중앙집중식
-  // data() {
-  //     return {
-  //         todoItems: []
-  //     }
-  // },
+  computed: {
+    // 변수명과 getters 이름 같을 때
+    ...mapGetters(['storedTodoItems']),
 
-  // // 인스턴스가 생성되지마자 호출되는 라이프 사이클 훅
-  // created() {
-  //     console.log('created');
-  //     if (localStorage.length <= 0) return;
-  //     for (var i = 0; i < localStorage.length; i++) {
-  //         if (localStorage.key(i) === 'naveruserlocale') continue;
-  //         this.todoItems.push(localStorage.key(i))
-  //     }
-
-  // },
-
+    // 변수명과 getters 이름이 다를 때
+    // ...mapGetters({
+    //   todoItems: "storedTodoItems",
+    // }),
+  },
   methods: {
-    removeTodo(todoItem, index) {
-      // this.$store.commit('removeOneItem', todoItem, index);
-      this.$store.commit('removeOneItem', {todoItem, index});
-    },
-    toggleComplete(index) {
-      // this.$emit('toggleItem', todoItem, index);
-      this.$store.commit('toggleOneItem', index);
-    }
+    ...mapMutations({
+      removeTodo: 'removeOneItem',
+      toggleComplete: 'toggleOneItem',
+    }),
+    // 아래와 같은 메서드를 위와 같은 mapMutations 통해 쉽게 선언할 수 있다.
+    // removeTodo(todoItem, index) {
+    //   // this.$store.commit('removeOneItem', todoItem, index);
+    //   this.$store.commit('removeOneItem', {todoItem, index});
+    // },
+    // toggleComplete(index) {
+    //   // this.$emit('toggleItem', todoItem, index);
+    //   this.$store.commit('toggleOneItem', index);
+    // }
   }
 }
 </script>

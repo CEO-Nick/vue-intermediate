@@ -7,9 +7,13 @@ Vue.use(Vuex);
 const storage = {
     fetch() {
         const arr = [];
-        if (localStorage.length <= 0) return;
+        if (localStorage.length <= 0) {
+            return;
+        }
         for (let i = 0; i < localStorage.length; i++) {
-            if (localStorage.key(i) === 'naveruserlocale') continue;
+            if (localStorage.key(i) === 'naveruserlocale') {
+                continue;
+            }
             // localStorage에서 key에 대한 value를 가져온다 -> 근데 JSON.stringify()로 Obj를 string으로 만들어서 넣는다.
             const str = localStorage.getItem(localStorage.key(i));
             // string을 다시 Object로 변환
@@ -24,15 +28,20 @@ export const store = new Vuex.Store({
     state: {
         todoItems: storage.fetch(),
     },
+    getters: {
+        storedTodoItems(state) {
+            return state.todoItems;
+        }
+    },
     mutations: {
         addOneItem(state, todoItem) {
             const obj = {completed: false, item: todoItem};
             localStorage.setItem(todoItem, JSON.stringify(obj));
             state.todoItems.push(obj);
         },
-        removeOneItem(state, payload) {
-            localStorage.removeItem(payload.todoItem);
-            state.todoItems.splice(payload.index, 1);
+        removeOneItem(state, index) {
+            localStorage.removeItem(state.todoItems[index].item);
+            state.todoItems.splice(index, 1);
         },
         toggleOneItem(state, index) {
             const current = state.todoItems[index];
